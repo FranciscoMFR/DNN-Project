@@ -5,6 +5,9 @@ import shutil
 
 from my_utils import split_data, order_test_set
 
+from deepLearningModels import street_signs_model
+
+
 
 if __name__ == '__main__':
 
