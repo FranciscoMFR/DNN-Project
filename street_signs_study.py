@@ -3,7 +3,7 @@ import glob
 from sklearn.model_selection import train_test_split
 import shutil
 
-from my_utils import split_data, order_test_set
+from my_utils import create_generators, split_data, order_test_set
 
 from deepLearningModels import street_signs_model
 
@@ -11,12 +11,20 @@ from deepLearningModels import street_signs_model
 
 if __name__ == '__main__':
 
-    if False:
-        path_to_data = "C:\\Users\\User\\OneDrive - Universidade de Aveiro\\Desktop\\UA\\Projeto\\DNN-Project\\archive\\Train"
-        path_to_save_train = "C:\\Users\\User\\OneDrive - Universidade de Aveiro\\Desktop\\UA\\Projeto\\DNN-Project\\archive\\training_data\\train"
-        path_to_save_val = "C:\\Users\\User\\OneDrive - Universidade de Aveiro\\Desktop\\UA\\Projeto\\DNN-Project\\archive\\training_data\\val"
-        split_data(path_to_data, path_to_save_train, path_to_save_val)
+    path_to_train_data = "C:\\Users\\User\\OneDrive - Universidade de Aveiro\\Desktop\\UA\\Projeto\\DNN-Project\\archive\\training_data\\train"
+    path_to_val_data = "C:\\Users\\User\\OneDrive - Universidade de Aveiro\\Desktop\\UA\\Projeto\\DNN-Project\\archive\\training_data\\val"
+    path_to_test_data = "C:\\Users\\User\\OneDrive - Universidade de Aveiro\Desktop\\UA\\Projeto\\DNN-Project\\archive\\Test"
+    batch_size=64
 
-    path_to_images = "C:\\Users\\User\\OneDrive - Universidade de Aveiro\\Desktop\\UA\\Projeto\\DNN-Project\\archive\\Test"
-    path_to_csv = "C:\\Users\\User\\OneDrive - Universidade de Aveiro\\Desktop\\UA\\Projeto\\DNN-Project\\archive\\Test.csv"
-    order_test_set(path_to_images, path_to_csv)
+    train_generator, val_generator, test_generator = create_generators(path_to_train_data, path_to_val_data, path_to_test_data)
+    nbr_classes = train_generator.num_classes
+
+    model = street_signs_model(nbr_classes)
+
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+    model.fit(train_generator,         
+                epochs=3,
+                batch_size=batch_size,
+                validation_data=val_generator
+            ) 
