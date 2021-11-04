@@ -8,7 +8,7 @@ from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 from my_utils import create_generators, split_data, order_test_set
 
 from deepLearningModels import street_signs_model
-
+import tensorflow as tf
 
 
 if __name__ == '__main__':
@@ -22,26 +22,41 @@ if __name__ == '__main__':
     train_generator, val_generator, test_generator = create_generators(batch_size, path_to_train_data, path_to_val_data, path_to_test_data)
     nbr_classes = train_generator.num_classes
 
-    path_to_save_model = "./Models"
-    ckpt_saver = ModelCheckpoint(
-        path_to_save_model,
-        monitor="val_accuracy",
-        mode='max',
-        save_best_only=True,
-        save_freq='epoch',
-        verbose=1
-    )
 
-    early_stop = EarlyStopping(monitor='val_accuracy', patience=10)
+    TRAIN = False
+    TEST = True
 
-    model = street_signs_model(nbr_classes)
+    if TRAIN:
+        path_to_save_model = "./Models"
+        ckpt_saver = ModelCheckpoint(
+            path_to_save_model,
+            monitor="val_accuracy",
+            mode='max',
+            save_best_only=True,
+            save_freq='epoch',
+            verbose=1
+        )
 
-    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+        early_stop = EarlyStopping(monitor='val_accuracy', patience=10)
 
-    model.fit(train_generator,         
-                epochs=epochs,
-                batch_size=batch_size,
-                validation_data=val_generator,
-                callbacks=[ckpt_saver, early_stop]
-            ) 
+        model = street_signs_model(nbr_classes)
 
+        model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+        model.fit(train_generator,         
+                    epochs=epochs,
+                    batch_size=batch_size,
+                    validation_data=val_generator,
+                    callbacks=[ckpt_saver, early_stop]
+                ) 
+
+    if TEST:
+
+        model = tf.keras.models.load_model('./Models')
+        model.summary()
+
+        print('Evaluating validation set:')
+        model.evaluate(val_generator)
+
+        print('Evaluating test set:')
+        model.evaluate(test_generator)
