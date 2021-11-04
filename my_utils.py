@@ -88,11 +88,17 @@ def order_test_set(path_to_images, path_to_csv):
 
 def create_generators(batch_size, train_data_path, val_data_path, test_data_path):
 
-    preprocessor = ImageDataGenerator(
-        rescale = 1 /255.
+    train_preprocessor = ImageDataGenerator(
+        rescale = 1 /255.,
+        rotation_range = 10,
+        width_shift_range = 0.1
     )
 
-    train_generator = preprocessor.flow_from_directory(
+    test_preprocessor = ImageDataGenerator(
+        rescale = 1 /255.,
+    )
+
+    train_generator = train_preprocessor.flow_from_directory(
         train_data_path,
         class_mode="categorical",
         target_size=(60,60),
@@ -101,7 +107,7 @@ def create_generators(batch_size, train_data_path, val_data_path, test_data_path
         batch_size=batch_size
     )
 
-    val_generator = preprocessor.flow_from_directory(
+    val_generator = test_preprocessor.flow_from_directory(
         val_data_path,
         class_mode="categorical",
         target_size=(60,60),
@@ -110,7 +116,7 @@ def create_generators(batch_size, train_data_path, val_data_path, test_data_path
         batch_size=batch_size
     )
 
-    test_generator = preprocessor.flow_from_directory(
+    test_generator = test_preprocessor.flow_from_directory(
         test_data_path,
         class_mode="categorical",
         target_size=(60,60),

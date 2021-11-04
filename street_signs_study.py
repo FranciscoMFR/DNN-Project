@@ -18,6 +18,7 @@ if __name__ == '__main__':
     path_to_test_data = "C:\\Users\\User\\OneDrive - Universidade de Aveiro\Desktop\\UA\\Projeto\\DNN-Project\\archive\\Test"
     batch_size=64
     epochs = 100
+    lr = 0.0001
 
     train_generator, val_generator, test_generator = create_generators(batch_size, path_to_train_data, path_to_val_data, path_to_test_data)
     nbr_classes = train_generator.num_classes
@@ -41,7 +42,8 @@ if __name__ == '__main__':
 
         model = street_signs_model(nbr_classes)
 
-        model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+        optimizer = tf.keras.optimizers.Adam(learning_rate=lr, amsgrad=True)
+        model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
 
         model.fit(train_generator,         
                     epochs=epochs,
