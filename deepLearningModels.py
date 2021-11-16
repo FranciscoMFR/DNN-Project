@@ -84,9 +84,22 @@ def street_signs_model(nbr_classes):
 
     return Model(inputs=my_input, outputs=x)
 
+def mnist_model(nbr_classes):
+
+    my_input = Input(shape=(28,28,1))
+
+    x = Dense(800, activation='relu')(my_input)
+    x = MaxPool2D()(x)
+    x = BatchNormalization()(x)
+
+    x = GlobalAvgPool2D()(x)
+    x = Dense(nbr_classes, activation='softmax')(x)
+
+    return Model(inputs=my_input, outputs=x)
+
 
 
 if __name__=='__main__':
 
-    model = street_signs_model(10)
+    model = mnist_model(10) #(None, 28, 28, 1)
     model.summary()
