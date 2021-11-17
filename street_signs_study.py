@@ -16,16 +16,16 @@ if __name__ == '__main__':
     path_to_train_data = "C:\\Users\\User\\OneDrive - Universidade de Aveiro\\Desktop\\UA\\Projeto\\DNN-Project\\archive\\training_data\\train"
     path_to_val_data = "C:\\Users\\User\\OneDrive - Universidade de Aveiro\\Desktop\\UA\\Projeto\\DNN-Project\\archive\\training_data\\val"
     path_to_test_data = "C:\\Users\\User\\OneDrive - Universidade de Aveiro\Desktop\\UA\\Projeto\\DNN-Project\\archive\\Test"
-    batch_size=64
-    epochs = 100
+    batch_size=32
+    epochs = 1000
     lr = 0.0001
 
     train_generator, val_generator, test_generator = create_generators(batch_size, path_to_train_data, path_to_val_data, path_to_test_data)
     nbr_classes = train_generator.num_classes
 
 
-    TRAIN = False
-    TEST = True
+    TRAIN = True
+    TEST = False
 
     if TRAIN:
         path_to_save_model = "./Models"
@@ -62,3 +62,5 @@ if __name__ == '__main__':
 
         print('Evaluating test set:')
         model.evaluate(test_generator)
+
+        #0.99923
