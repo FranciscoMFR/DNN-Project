@@ -1,0 +1,34 @@
+BAYESIAN MODEL COMPaRISON:
+> First applied to NN in MacKay(1992);
+> Model M with a single parameter w, trainin inputs x and training labels y;
+> Bayes Theorem:
+    ->describes the probability of an event, based on prior knowledge of conditions that might be related to the event.For example, if the risk of developing health problems 
+      is known to increase with age, Bayes' theorem allows the risk to an individual of a known age to be assessed more accurately (by conditioning it on their age) than simply 
+      assuming that the individual is typical of the population as a whole.
+    ->one of the many applications of Bayes' theorem is Bayesian inference, a particular approach to statistical inference. when applied, the probabillities involved in the theorem
+      may have different probabillity interpretations. with Bayesian probabillity interpretation, the theorem express hoa a degree os belief, expressed as a probabillity, should 
+      rationally change to account for the availability of related evidence. Bayesian inference is fundamental to Bayesian statistics.
+    ->statement of theorem: Bayes' theorem is stated mathematically as the following equation:
+
+                            P(A|B) = P(B|A)P(A) / P(B)
+      where A and B are events and P(B)!=0
+      > P(A|B) is a conditional probability: the probability of event A occurring given that B is true. It is also called the posterior probability of A given B;
+      > P(B|A) is also a conditional probability: the probability of event B occurring given that A is true. It can also be interpreted as the likelihood
+        (https://en.wikipedia.org/wiki/Likelihood_function) of A given a fixed B because P(B|A) = L(A|B);
+      > P(A) and P(B) are the probabillities of observig A and b respectively without any given conditions. They are known as the marginal probability or prior probability
+        (https://en.wikipedia.org/wiki/Prior_probability);
+      > A and B must be different eventes;
+
+    ->application:
+
+                            P(w|y,x;M) = P(y|w,x;M)P(w;M) / P(y|x;M) !!!!!!!!!!!!!!!!!!!!!!!!TODO READ!!!!
+
+
+    ->MacKay:
+      >Basic framework for learning in networks: The training set for the mapping to be learned is a set of input-target pairs D={x^m,t^m}, where m is a label running over the pairs. 
+        A neural network architecture A is invented, consisting of a specification of the number of layers, the number of units in each layer, the type of activation function performed 
+        by each unit, and the available connections between the units. If a set of values w is assigned to the connections in the network, the network defines a mapping y(x;w,A) from
+        the input activities x to the output activities y. The distance of this mapping to the training set is measured by some error funtion (E_D is defined as the error in the 
+        entire data set );
+      >The task of "learning" is to find a set of connections w that gives a mapping that fits the trainingset well, that is, has small E_D;
+      
