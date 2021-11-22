@@ -30,5 +30,57 @@ BAYESIAN MODEL COMPaRISON:
         by each unit, and the available connections between the units. If a set of values w is assigned to the connections in the network, the network defines a mapping y(x;w,A) from
         the input activities x to the output activities y. The distance of this mapping to the training set is measured by some error funtion (E_D is defined as the error in the 
         entire data set );
-      >The task of "learning" is to find a set of connections w that gives a mapping that fits the trainingset well, that is, has small E_D;
+      >The task of "learning" is to find a set of connections w that gives a mapping that fits the trainingset well, that is, has small E_D; it is also hoped that the learned 
+        connections will "generalize" well to new examples.
+      >Plain backpropagation learns by performing gradient descent on E_D in w-space. Modifications include the addition of a "momentum" term, and the inclusion of noise in the 
+        descent process;
+      >One popular way of comparing networks trained with different parameter values is to assess their performance by measuring the error on an unseen test set or by similar 
+        cross-validation techniques. The data are divided into two sets, a training set that is used to optimize control parameters w of the network, and a test set that is used to 
+        optimize control parameters such as alpha and the architecture A.
+      >The utility of these techniques in determining values for the the parameters alpha and betha or for comparing alternative network solutions, etc., is limited because a large
+        test set may be needed to reduce the signal-to-noise ratio in the test error, and cross-validation is computationally demanding.
+      >Probabilistic view of learning that is an important step toward solving the problems listed above. The idea is to force a probablistic interpretation onto the neural network
+        technique so as to be able to make objective statements. This interpretation does not involve the addition of any new arbitrary functions or parameters, but it involves 
+        assigning a meaning to the functions and parameters that are already used. 
+      >Review the probabilistic interpretation of network learning:
+
+                ->Likelihood: A network with specified architecture A and connections w is viewed as making predictions abaout the target outputs as a function of input x in 
+                  accordance with the probability distribution:
+
+
+                                P(t^m|x^m,w,betha,A) = exp[-betha.E(t^m|x^m,w,a)] / Z_m(betha)
+
+                  where Z_m(betha) = int(dt exp(-betha.E)). E is the error for a single datum, and betha is a measure of the presumed noise included in t. If E is the quadratic error 
+                  function then this corresponds to the assumption that t includes additive gaussian noise with variance sigma_{niu}^2 = 1/betha.
+                
+                ->Prior: A prior probability is assigned to alternative network connection strengths w, written in the form:
+
+                                P(w|aloha,A,R) = exp[-alpha.E_w(w|A)] / Z_w(alpha)
+
+                  where Z_w = int(d^kw exp(-alpha.E_w)). Here alpha is a measure of the characteristic expected connection magnitude. If E_w is quadratic then weights are expected 
+                  to come from a gaussian with zero mean and variance sigma_w^2 = 1/alpha. Alternative "regulizers" R (each using a different energy function E_w) implicitly 
+                  correspond to alternative hypotheses about the statistics of the environment.
+
+                ->The posterior probability of the network connections w is then
+
+                                P(w|D,alpha,betha,A,R) = exp(-alpha.E_w-betha.E_D) / Z_M(alpha,betha)
+
+                  where Z_M(alpha,betha) = int(d^kw exp(-alpha.E_w-betha.E_D)).The exponent in this expression is the same as (minus) the objective function M.
+
+      >Under this framework, minimization of M=alpha.E_w + betha.E_D is identical to finding the (locally) most probable parameters w_{MP};minimization of E_D aloneis identical to
+        finding the maximum likelihood parameters w_{ML}. Thus an interpretation has been given to backpropagation's energy functions E_D and E_w, and to the parameters alpha and 
+        betha. It should be emphasized that "the probability if the connections w" is a measure of plausibility that the model's parameters should have a specified value w; this has
+        nothing to do with the probability that a particular algorithm might converge to w.
+
+      >Determination of alpha and betha. By Bayes' rule, the posterior probability for these parameters is
+
+                                P(alpha, betha|D,A,R) = P(D|alpha,betha,A,R)P(alpha,betha) / P(D|A,R)
+
+        Now if we assign a uniform prior to (alpha,betha), the quantity of interest for assigning preferences to (alpha,betha) is the first term on the right-hand side, the evidence
+        for alpha and betha, which can be written as
+
+                                P(D|alpha,betha,A,R) = Z_M(alpha,betha) / (Z_W(alpha).Z_D(betha))
+
+        where Z_M and Z_W were defined earlier and Z_D=int(d^ND.exp(-betha.E_D))
+
       
