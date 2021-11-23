@@ -23,6 +23,7 @@ BAYESIAN MODEL COMPaRISON:
 
                             P(w|y,x;M) = P(y|w,x;M)P(w;M) / P(y|x;M) !!!!!!!!!!!!!!!!!!!!!!!!TODO READ!!!!
 
+      ***
 
     ->MacKay:
       >Basic framework for learning in networks: The training set for the mapping to be learned is a set of input-target pairs D={x^m,t^m}, where m is a label running over the pairs. 
@@ -83,4 +84,62 @@ BAYESIAN MODEL COMPaRISON:
 
         where Z_M and Z_W were defined earlier and Z_D=int(d^ND.exp(-betha.E_D))
 
+
+      ***
+      >The likelihood, P(y|w,x;M) = Prod_i(y_i|w,x_i;M) = exp(-H(w;M)), where H(w,M) = -Sum_i(ln(P(y_i|w,x_i;M))) denotes the cross-entropy of unique categorical labels. We 
+        typically use a Gaussian prior, P(w;M) = sqrt(lambda/(2.pi)).exp(-lambda.w^2 / 2), and therefor the posterior probability density if the parameter given the training data,
+        P(w|y,x;M) aprox sqrt(lambda / (2.pi)).exp(-C(w;M)), where C(w;M) = H(w;M)+lambda.w^2/2 denotes L2 regularized cross entropy, or "cost function", and lambda is the 
+        regularization coefficient. The value w_0 which minimizes the cost function lies at the maximum of this posterior. To predict an unknown label y_t of a new input x_t, we
+        should compute the integral,
+
+                                P(y_t|x_t,y,x;M) = int(dw P(y_t|w,x_t;M).P(w|y,x;M))
+
+                                                 = int(dw P(y_t|w,x_t;M).exp(-C(w;M))) / int(dw exp(-C(w;M))) 
+
+
+      >However these integrals are dominated by the region near w_0, and since P(y_t|w,x_t;M) is smooth we usually approximate P(y_t|x_t,x,y;M) aprox/ P(y_t|w_0,x_t;M). 
+      Having minimized C(w;M) to find w_0, we now wish to compare two different models and select the best one. The probability ratio,
+
+                                P(M_1|y,x) / P(M_2|y,x) = P(y|x;M_1) / P(y|x;M_2) . P(M_1) / P(M_2)
+
+      >The second factor on the right is the prior ratio, which describes which model is most plausible . To avoid unnecessary subjectivity, we usually set this to 1. Meanwhile the
+      first factor ont the right is the evidence ratio, which controls how much the training data changes our prior beliefs.
       
+
+    ->Bayes Theorem and Generalization:
+
+      >Zhang et al. (2016) showed that deep neural networks generalize well on training inputs with informative labels, and yet the same model can drastically overfit on the same 
+        input images when the labels are randomized:
+
+          LER!!!!!!!!!!!!!!
+
+      >To demonstrate that these observations are not unique to deep networks, let's consider a far simpler model, logistic model. We form a small balanced training set comprising 
+        800 images from MNIST, of which half have true label "0" and half have true label "1". Our test set is also balanced, comprising 5000 MNIST images if zeros and 5000 MNIST
+        images of ones. There are two tasks. In the first task, the labels of both the training and test sets are randomized. In the second task, the labels are informative, 
+        matching the true MNIST labels. Since the images contain 784 pixels, our model has just 784 weights and 1 bias.
+      >When trained on informative labels, the model generalizes well to test set, so long as it is weakly regularized. However the model also perfectly memorizes the random labels, 
+        replicating the observations of Zhang et al. (2016) in deep neural networks. No significant improvement in model performance is observed as the regularization coefficient
+        increases.
+      >Bayesian model comparison has explained our resilts in a logistic regression. We conclude that Bayesian model comparison is quantitatively consistent with the results of 
+        Zhang et al. (2016) in linear models where we can compute the evidence, and quantitatively with their results in deep networks where we cannot
+
+
+    ->Bayes Theorem and Stochastic Gradient Descent:
+
+      >We showed above that generalization is strongly correlated with the Bayesian evidence, a weighted combination of the depth of a minimum (the cost function) and its breadth
+        (the Occam factor). Consequently Bayesians often add isotropic Gaussian noise to the gradient (Welling & Teh, 2011).
+      >In appendix A, we show this drives the parameters towards broad minima whose evidence is large. The noise introduced by small batch training is not isotropic, and its 
+        covariance matrix is a functionof the parameters values, but empirically Keskar et al. (2016) found it has similar effects, driving the SGD away from sharp minima. This 
+        paper therefore proposes Bayesian principles also account for the "generalization gap", whereby the test set accuracy often falls as the SGD towards deep minima, while 
+        noise drives SGD towards broad minima, we expect the test set performance to show a peak at an optimal batch size, which balances these competing contributions to the evidence.
+
+            ->Keskar et al. (2016):
+
+              LER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+            ->Appendix A Bayesian Posterior Sampling And Langevin Dynamics:
+
+              LER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+      >We were unable to observe a generalization gap in linear models (since linear models are convex there are no sharp minima to avoid). Instead we consider a shallow neural network
+        with 800 hidden units and RELU hidden activations, trained on MNIST without regularization. We use SGD with a momentum parameter of 0.9. 
