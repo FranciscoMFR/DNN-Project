@@ -6,7 +6,7 @@ BAYESIAN MODEL COMPaRISON:
       is known to increase with age, Bayes' theorem allows the risk to an individual of a known age to be assessed more accurately (by conditioning it on their age) than simply 
       assuming that the individual is typical of the population as a whole.
     ->one of the many applications of Bayes' theorem is Bayesian inference, a particular approach to statistical inference. when applied, the probabillities involved in the theorem
-      may have different probabillity interpretations. with Bayesian probabillity interpretation, the theorem express hoa a degree os belief, expressed as a probabillity, should 
+      may have different probabillity interpretations. with Bayesian probabillity interpretation, the theorem express how a degree of belief, expressed as a probabillity, should 
       rationally change to account for the availability of related evidence. Bayesian inference is fundamental to Bayesian statistics.
     ->statement of theorem: Bayes' theorem is stated mathematically as the following equation:
 
@@ -142,4 +142,27 @@ BAYESIAN MODEL COMPaRISON:
               LER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
       >We were unable to observe a generalization gap in linear models (since linear models are convex there are no sharp minima to avoid). Instead we consider a shallow neural network
-        with 800 hidden units and RELU hidden activations, trained on MNIST without regularization. We use SGD with a momentum parameter of 0.9. 
+        with 800 hidden units and RELU hidden activations, trained on MNIST without regularization. We use SGD with a momentum parameter of 0.9. Unless otherwise stated, we use a 
+        constant learning rate of 1.0 which does not depend on the batch size or decay during training. Furthermore, we train on just 100 images, selected at random from the MNIST 
+        training set.This enables us to compare small batch to full batch training. We emphasize that we are not trying to achieve optimal performance, but to study a simple model 
+        which shows a generalization gap between small and large training.
+      >Focus on the test set accuracy (since this converges as the number of gradient updates increases). In figure XXXX, we exhibit training curves for a range of batch sizes 
+        between 1 and 1000. We find that the model cannoit train when the batch size B <=aprox 10. In figure XXXX we plot the mean test set accuracy after 10000 training steps.
+        A clear peak emerges, indicating that there is indeed an optimum batch size which maximizes the test accuracy, consistent with Bayesian intuition. The results of 
+        Keskar et al. (2016) focused on the decay in test accuracy above this optimum batch size.
+
+    ->We showed above that the test accuracy peaks at an optimal batch size, if one holds the other SGD hyper-parameter constant. We argued that this peak arises from the tradeoff 
+      between depth and breadth in the Bayesian evidence. However it is not the batch size itself which controls this tradeoff, but the underlying scale of random flutuations in the SGD
+      dynamics. We now identify this SGD "noise scale", and use it to derivate three scaling rules which predict how the optimal batch size depends on the learning rate, training set size
+      and momentum coefficient. A gradient update,
+
+                                delta w = -epsilon/N(dC/dw + (dC'/dw - dC/dw))
+
+      where epsilon is the learning rate, N the training set size, dC/dw = sum_{i=1}^N(dC_i/dw) the true gradient, and dC'/dw = N/B . sum_{i=1}^N(dC_i/dw) the estimated gradient evaluated 
+      on a mini-batch. 
+    >The expected gradient of a single example, <dC_i/dw> = 1/N . dC/dw, while <dC_i/dw . dC_j/dw> = (1/N . dC/dw)^2 + F(w) . dirac_{ij}. F(w) is a matrix describing the theorem and model 
+      the gradient error alpha = (dC'/dw - dC/dw) with Gaussian random noise (We discuss this aprocimation briefly in appondix C) 
+      ...
+
+      ->Appendix C:
+        >
