@@ -63,4 +63,4 @@ if __name__ == '__main__':
         print('Evaluating test set:')
         model.evaluate(test_generator)
 
-        #0.99923
+        #0.99923 asdasdasdasdasdasd
