@@ -12,6 +12,7 @@ from keras.layers import Flatten, Dense, Activation, Dropout
 from keras.optimizers import Adam, RMSprop
 from keras.utils import to_categorical, plot_model
 from keras import backend as K
+from keras.regularizers import l2
 
 #from subprocess import check_output
 #print(check_output(["ls", "../input"]).decode("utf8"))
@@ -71,15 +72,29 @@ dropout = 0.45        #dropout is the dropout rate (sections 7 - Overfitting and
 # model is a 3-layer MLP with ReLu and dropout 
 model = Sequential()
 model.add(Dense(hidden_units, input_dim=input_size))
+#model.add(Dense(hidden_units, kernel_regularizer=l2(0.001), input_dim=input_size))  #l2 weight regularizer with fraction=0.001
 model.add(Activation("relu"))
-model.add(Dropout(dropout))
+#model.add(Dropout(dropout))
 model.add(Dense(hidden_units))
 model.add(Activation("relu"))
-model.add(Dropout(dropout))
+#model.add(Dropout(dropout))
 model.add(Dense(num_labels))
 model.add(Activation("softmax"))
 
 model.summary()
 
 plot_model(model, to_file="mlp-mnist.png", show_shapes=True)
-##dasdasd
+
+#Copiling the model with compile()
+model.compile(loss="categorical_crossentropy",
+              optimizer="adam",
+              metrics=["accuracy"])
+
+#Trinning the model with fit()
+model.fit(x_train, y_train, epochs=20, batch_size=batch_size)
+
+#Evaluating model performance with evaluate()
+loss, acc = model.evaluate(x_test, y_test, batch_size=batch_size)
+print("\nTest accuracy: %.1f%%" % (100.0 * acc))
+
+
