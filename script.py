@@ -82,3 +82,4 @@ model.add(Activation("softmax"))
 model.summary()
 
 plot_model(model, to_file="mlp-mnist.png", show_shapes=True)
+##dasdasd
