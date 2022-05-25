@@ -166,3 +166,20 @@ BAYESIAN MODEL COMPaRISON:
 
       ->Appendix C:
         >
+
+
+
+> Overfitting and Regularization:
+  -A neural network has the property to memorize the characteristics of training data. This is called overfitting.
+  -In such a case, the network fails to generalize when subject to the test data.
+  -To avoid this tendency, the model uses a regularizing layer or function. A commonly used regularizing  layer is referred to as a Dropout layer.
+  -Given a dropout rate (dropout=0.45),  the Dropout layer randomly removes the fraction of units from participating in the next layer. For example, 
+  if the first layer has 256 units, after dropout=0.45 is applied, only (1-0.45)*256 units = 140 units from layer 1 participate in layer 2.
+  -The Dropout layer makes neural networks robust to unforeseen input input data because the network is trained to predict correctly, even if some 
+  units are missing.
+  -The dropout is not used in the output layer and it is only active during training. Moreover, dropout is not present during prediction.
+  -There are regulizers that can be used other than dropouts like l1 or l1. In Keras, the bias, weight and activation output can be regularizedper layer.
+  l1 and l2 favor smaller parameter values by adding a penalty function. Both l1 and l2 enforce the penalty using a fraction of the sum of absolute (l1) 
+  or square (l2) of parameter values.
+  -So, the penalty function forces the optimizer to find parameter values that are small. Neural networks with small parameter values are more insensitive 
+  to the presence of noise from within the input data.
