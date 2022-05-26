@@ -65,8 +65,8 @@ x_test = np.reshape(x_test, [-1, input_size])
 x_test = x_test.astype("float32") / 255
 
 # network parameters
-batch_size = 128
-hidden_units = 256
+batch_size = 32
+hidden_units = 800
 dropout = 0.45        #dropout is the dropout rate (sections 7 - Overfitting and Regularization)
 
 # model is a 3-layer MLP with ReLu and dropout 
@@ -85,13 +85,13 @@ model.summary()
 
 plot_model(model, to_file="mlp-mnist.png", show_shapes=True)
 
-#Copiling the model with compile()
+# Copiling the model with compile()
 model.compile(loss="categorical_crossentropy",
               optimizer="adam",
               metrics=["accuracy"])
 
-#Trinning the model with fit()
-model.fit(x_train, y_train, epochs=20, batch_size=batch_size)
+# Trainning the model with fit()
+model.fit(x_train, y_train, epochs=320, batch_size=batch_size)
 
 #Evaluating model performance with evaluate()
 loss, acc = model.evaluate(x_test, y_test, batch_size=batch_size)
