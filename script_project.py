@@ -1,4 +1,5 @@
 import shutil
+
 # import mathematical libs
 from telnetlib import SE
 import numpy as np
@@ -41,7 +42,7 @@ x_test = x_test.astype("float32") / 255
 
 # network parameters
 filename = "shallow_mnist"
-batch_size = 32
+batch_size = 1000
 lr = 1.0
 epochs = 50
 momento = 0.1
@@ -51,9 +52,7 @@ dropout = 0.45
 # model is a shallow network with softmax and dropout
 model = Sequential()
 model.add(Flatten(input_dim=input_size))
-#model.add(Dropout(dropout))
 model.add(Dense(hidden_units, activation="relu"))
-#model.add(Dropout(dropout))
 model.add(Dense(num_labels, activation="softmax"))
 
 model.summary()
