@@ -34,20 +34,22 @@ image_size = x_train.shape[1]
 input_size = image_size**2
 
 # resize and normalize
-
 x_train = np.reshape(x_train, [-1, input_size])
 x_train = x_train.astype("float32") / 255
 x_test = np.reshape(x_test, [-1, input_size])
 x_test = x_test.astype("float32") / 255
 
+# data shape
+print(f"x_train shape:{x_train.shape}")
+
 # network parameters
 filename = "shallow_mnist"
-batch_size = 1000
-lr = 1.0
+batch_size = 32
+lr = 0.1
 epochs = 50
 momento = 0.1
 hidden_units = 800
-dropout = 0.45
+dropout = 0.45            #não utilizado
 
 # model is a shallow network with softmax and dropout
 model = Sequential()

@@ -17,8 +17,8 @@ from keras.regularizers import l2
 #from subprocess import check_output
 #print(check_output(["ls", "../input"]).decode("utf8"))
 
-#load dataset (mnist)
-(x_train, y_train),(x_test,y_test) =mnist.load_data()
+# load dataset (mnist)
+(x_train, y_train),(x_test,y_test) = mnist.load_data()
 
 # number of unique train lables (0-9)  TO DO construct an histogram
 unique, counts = np.unique(y_train, return_counts=True)
